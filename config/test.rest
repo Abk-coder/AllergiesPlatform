@@ -1,4 +1,4 @@
-POST  http://localhost:5000/api/user/6303d4dafc3e9785a19f5f77
+POST  http://localhost:5000/api/user/register
 
 content_type: "application/json"
 {

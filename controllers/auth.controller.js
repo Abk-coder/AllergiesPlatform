@@ -2,9 +2,11 @@ const UserModel = require('../models/user.model');
 // const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+const { signUpErrors, signInErrors } = require('../utils/errors.utils');
+
 const maxAge = 3 * 24 * 60 * 60 * 1000; //3 jours
 const createToken = (id) => {
-    return jwt.sign({id}, process.env.TIKEN_SECRET, {
+    return jwt.sign({id}, process.env.TOKEN_SECRET, {
         expiresIn: maxAge
     });
 }
@@ -15,11 +17,12 @@ module.exports.signUp = async (req, res) => {
 
     try {
         const user = await new UserModel({user_name, email, password});
-        res.status(201).json({user: user._id});
-        user.save();
+        //user.save();
+        return res.status(201).json({user: user});
+
     }
     catch(err){
-        res.status(400).send({err});
+        return res.status(400).send({err});
     }
 } ;
 
@@ -44,14 +47,15 @@ module.exports.signUp = async (req, res) => {
 
 module.exports.signIn= async (req, res ) => {
     const {email, password} = req.body;
+    console.log(req.body);
     try {
-        const user = await  UserModel.login(email, password);
-        const token = createToken(user._id);
-        res.cookie('jwt', token, {httpOnly: true, maxAge});
-        res.status(200).json({user: user._id});
+        const user = await  UserModel.findOne(email, password);
+        //const token = createToken(user._id);
+        //res.cookie('jwt', token, {httpOnly: true, maxAge});
+        return res.status(200).json({message:"Connexion reussie !", user});
     } catch(err){
-        const errors = signUpErrors(err);
-        res.status(200).send({errors});
+        const errors = signInErrors(err);
+        return res.status(500).send({errors});
     } 
 } 
 

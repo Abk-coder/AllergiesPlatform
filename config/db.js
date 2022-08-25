@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 
 mongoose
 .connect(
-    "mongodb+srv://"+process.env.DB_HOST+"@allergiessocialnetwok.mkbztua.mongodb.net/O2A_database",
-    // "mongodb://localhost:27017/test",
+    //"mongodb+srv://"+process.env.DB_HOST+"@allergiessocialnetwok.mkbztua.mongodb.net/O2A_database",
+    "mongodb://localhost:27017/test",
     {
         useNewUrlParser: true, 
         useUnifiedTopology: true,
